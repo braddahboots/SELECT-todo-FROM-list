@@ -25,19 +25,19 @@ CREATE TABLE tasks (
   completed boolean
 );
 
--- remove a column from table
+-- i remove a column from table
 ALTER TABLE tasks DROP COLUMN completed;
 
--- add a column to tasks table
+-- ii add a column to tasks table
 ALTER TABLE tasks ADD COLUMN completed_at timestamp null;
 
--- update column on tasks table
+-- iii update column on tasks table
 ALTER TABLE tasks ALTER COLUMN updated_at SET NOT NULL;
 
--- update column on tasks table
-ALTER TABLE tasks ALTER COLUMN updated_at SET NOT NULL;
+-- iii update column on tasks table
+ALTER TABLE tasks ALTER COLUMN updated_at SET DEFAULT now();
 
--- create new task by adding values
+-- iv create new task by adding values
 INSERT INTO tasks (title, description, created_at, updated_at, completed_at) VALUES (
   'Study SQL',
   'Complete this exercise',
@@ -46,7 +46,7 @@ INSERT INTO tasks (title, description, created_at, updated_at, completed_at) VAL
   NULL
 );
 
--- create new task1
+-- v create new task1
 INSERT INTO tasks (title, description, created_at, updated_at, completed_at) VALUES (
   'Study PostgreSQL',
   'Read all the documentation',
@@ -55,14 +55,56 @@ INSERT INTO tasks (title, description, created_at, updated_at, completed_at) VAL
   NULL
 );
 
--- select all titles of task
-SELECT title FROM tasks WHERE title = NULL;
+-- vi select all titles of task
+SELECT title FROM tasks WHERE completed_at IS NULL;
 
--- update titles that are null
+-- vii update titles that are null
 UPDATE tasks SET title = 'Study SQL' WHERE title = NULL;
 
--- select all titles and descriptions
+-- viii select all titles and descriptions
 SELECT title, description FROM tasks WHERE title = NULL AND description = NULL;
 
--- select all fields of each task sorted by creation date
-SELECT * FROM tasks
+-- ix select all fields of each task sorted by creation date
+SELECT * FROM tasks ORDER BY created_at DESC;
+
+-- x create a new task
+INSERT INTO tasks(title, description, created_at, updated_at, completed_at) VALUES (
+  'mistake 1',
+  'a test entry',
+  now(),
+  now(),
+  NULL
+);
+
+-- xi create a new task
+INSERT INTO tasks(title, description, created_at, updated_at, completed_at) VALUES (
+  'mistake 2',
+  'another test entry',
+  now(),
+  now(),
+  NULL
+);
+
+-- xii create a new task
+INSERT INTO tasks(title, description, created_at, updated_at, completed_at) VALUES (
+  'third mistake',
+  'another test entry',
+  now(),
+  now(),
+  NULL
+);
+
+-- xii select title fields by column value
+SELECT title FROM tasks WHERE title LIKE '%' || 'mistake' || '%';
+
+-- xiv deletes a row by specified column value
+DELETE FROM tasks WHERE title = 'mistake 1';
+
+-- xv select title and description fields by column value
+SELECT title, description FROM tasks WHERE title LIKE '%' || 'mistake' || '%';
+
+-- delete all task by specified column value
+DELETE FROM tasks WHERE title LIKE '%mistake%';
+
+-- select all fields and all tasks with title in ascending ORDER
+SELECT * FROM tasks ORDER BY title ASC;
