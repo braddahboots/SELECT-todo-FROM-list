@@ -15,5 +15,15 @@ CREATE DATABASE todo_app;
 -- //connect to new database
 \c todo_app;
 
+-- create a new table instance
+CREATE TABLE tasks (
+  id serial PRIMARY KEY,
+  title varchar(255),
+  description text,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  completed boolean
+);
+
 
 
